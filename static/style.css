@@ -1,0 +1,871 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background: #FFF7ED;
+    color: #333;
+    min-height: 100vh;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header {
+    background: linear-gradient(135deg, #0F766E, #115E59);
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+header h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container {
+    width: 90%;
+    max-width: 900px;
+    margin: 35px auto;
+}
+
+/* =========================
+   COMMON SECTIONS
+========================= */
+
+.upload-box,
+.result-box,
+.camera-section,
+.upload-section,
+.voice-command,
+.conversation-box,
+.shopping-section {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+}
+
+h2 {
+    color: #0F766E;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: #0F766E;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   CAMERA
+========================= */
+
+.camera-section {
+    border-top: 5px solid #0F766E;
+}
+
+#cameraPreview {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    margin: 15px auto;
+    border-radius: 12px;
+    border: 3px solid #0F766E;
+    background: #5f5d5d;
+}
+
+/* =========================
+   UPLOAD
+========================= */
+
+input[type="file"] {
+    width: 100%;
+    padding: 15px;
+    border: 2px dashed #0F766E;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #D1FAE5;
+    font-size: 15px;
+}
+
+/* =========================
+   LANGUAGE
+========================= */
+
+select {
+    width: 100%;
+    padding: 13px;
+    border: 2px solid #10645d;
+    border-radius: 10px;
+    background: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #0F766E;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #115E59;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* =========================
+   VOICE COMMAND
+========================= */
+
+.voice-command {
+    border-top: 5px solid #0F766E;
+    text-align: center;
+    background: linear-gradient(135deg, #ffffff, #f1f7ff);
+}
+
+.voice-command h3 {
+    font-size: 24px;
+}
+
+#startVoiceButton {
+    font-size: 19px;
+    padding: 17px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#voiceStatus {
+    margin-top: 18px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #D1FAE5;
+    color: #0F766E;
+    font-weight: bold;
+    line-height: 1.6;
+    border: 1px solid #c9e0ff;
+}
+
+#startVoiceButton {
+    font-size: 19px;
+}
+
+#voiceStatus {
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #D1FAE5;
+    color: #0F766E;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+/* =========================
+   CONVERSATION
+========================= */
+
+.conversation-box {
+    border-top: 5px solid #0F766E;
+}
+
+#conversation {
+    background: #F8FAFC;
+    padding: 15px;
+    border-radius: 10px;
+    line-height: 1.7;
+}
+
+/* =========================
+   PRODUCT DETAILS
+========================= */
+
+.details {
+    background: white;
+    border-left: 5px solid #0F766E;
+    padding: 22px;
+    border-radius: 12px;
+    font-size: 18px;
+    line-height: 1.7;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+}
+
+.details h3 {
+    margin-bottom: 12px;
+}
+
+/* =========================
+   SHOPPING LIST
+========================= */
+
+.shopping-section {
+    border-top: 5px solid #0F766E;
+}
+
+#shoppingItems {
+    background: #f7f9fc;
+    padding: 15px;
+    border-radius: 10px;
+    line-height: 1.7;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.user-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    padding: 18px 30px;
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    background: #0F766E;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-left {
+    text-align: left;
+    font-weight: bold;
+}
+
+.footer-center {
+    text-align: center;
+    font-size: 14px;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.logout-btn {
+    display: inline-block;
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    background: white;
+    color: #0F766E;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 30px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+
+    .container {
+        width: 94%;
+        margin: 25px auto;
+    }
+
+    .upload-box,
+    .result-box,
+    .camera-section,
+    .upload-section,
+    .voice-command,
+    .conversation-box,
+    .shopping-section {
+        padding: 20px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+
+    .details {
+        font-size: 16px;
+    }
+
+    .user-footer {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .footer-left,
+    .footer-center,
+    .footer-right {
+        text-align: center;
+    }
+
+    .details-actions {
+        flex-direction: column;
+    }
+}
+
+#startCameraBtn,
+#captureBtn {
+    max-width: 500px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cameraStatus {
+    text-align: center;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #f7f9fc;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+
+/* =========================
+   PRODUCT DETAILS
+========================= */
+
+.details-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+}
+
+.details-header h3 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.details-icon {
+    font-size: 28px;
+}
+
+.product-result {
+    background: #f7f9fc;
+    border-radius: 12px;
+    padding: 18px;
+    border: 1px solid #dbe8f5;
+}
+
+.product-result p {
+    margin: 0;
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.details-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.details-actions button {
+    margin-top: 0;
+    flex: 1;
+}
+
+/* =========================
+   SIDEBAR MENU
+========================= */
+
+/* Hamburger button */
+.menu-toggle {
+    position: fixed;
+    top: 18px;
+    left: 20px;
+
+    width: 45px !important;
+    height: 45px;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    color: white;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 28px;
+    line-height: 45px;
+
+    cursor: pointer;
+    z-index: 2000;
+}
+
+.menu-toggle:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: none;
+}
+
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+
+    top: 0;
+    left: -290px;
+
+    width: 280px;
+    height: 100vh;
+
+    background: white;
+
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.20);
+
+    z-index: 3000;
+
+    transition: left 0.3s ease;
+
+    overflow-y: auto;
+}
+
+
+/* Open sidebar */
+.sidebar.active {
+    left: 0;
+}
+
+
+/* Sidebar header */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 22px 20px;
+
+    background: #0F766E;
+    color: white;
+}
+
+
+.sidebar-header h2 {
+    margin: 0;
+    color: white;
+    font-size: 24px;
+}
+
+
+/* Close button */
+.close-menu {
+    width: 40px !important;
+    height: 40px;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    background: transparent !important;
+    color: white;
+
+    font-size: 28px;
+    line-height: 40px;
+
+    border: none;
+    cursor: pointer;
+}
+
+.close-menu:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    transform: none;
+}
+
+
+/* Navigation */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+
+    padding: 15px 10px;
+}
+
+
+.sidebar-nav a {
+    display: block;
+
+    padding: 14px 15px;
+    margin: 3px 0;
+
+    color: #1F2937;
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    border-radius: 10px;
+
+    transition: 0.2s;
+}
+
+
+.sidebar-nav a:hover {
+    background: #D1FAE5;
+    color: #0F766E;
+
+    transform: translateX(4px);
+}
+
+
+/* Mobile */
+@media (max-width: 768px) {
+
+    .sidebar {
+        width: 260px;
+        left: -270px;
+    }
+
+    .menu-toggle {
+        left: 12px;
+        top: 12px;
+    }
+
+}
+
+/* =========================
+   CONVERSATION IMPROVEMENT
+========================= */
+
+.conversation-box {
+    border-top: 5px solid #0F766E;
+    background: linear-gradient(135deg, #ffffff, #f0fdfa);
+}
+
+.conversation-box h3 {
+    color: #0F766E;
+    font-size: 22px;
+}
+
+#conversation {
+    background: #F8FAFC;
+    border: 1px solid #CCFBF1;
+    padding: 18px;
+    border-radius: 12px;
+    line-height: 1.8;
+    min-height: 70px;
+}
+
+#conversation p {
+    margin-bottom: 10px;
+}
+
+/* =========================
+   SHOPPING LIST IMPROVEMENT
+========================= */
+
+.shopping-section {
+    border-top: 5px solid #0F766E;
+    background: linear-gradient(135deg, #ffffff, #f0fdfa);
+}
+
+.shopping-section h3 {
+    color: #0F766E;
+    font-size: 22px;
+}
+
+#shoppingItems {
+    background: #F8FAFC;
+    border: 1px solid #CCFBF1;
+    padding: 18px;
+    border-radius: 12px;
+    line-height: 1.8;
+    min-height: 60px;
+}
+
+/* =========================
+   PRODUCT DETAILS IMPROVEMENT
+========================= */
+
+.details {
+    background: linear-gradient(135deg, #ffffff, #f0fdfa);
+    border-left: 6px solid #0F766E;
+    border-radius: 15px;
+    padding: 24px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+}
+
+.details-header {
+    background: #D1FAE5;
+    padding: 14px 16px;
+    border-radius: 10px;
+    margin-bottom: 18px;
+}
+
+.details-header h3 {
+    color: #0F766E;
+    font-size: 24px;
+}
+
+.product-result {
+    background: #F8FAFC;
+    border: 1px solid #CCFBF1;
+    border-radius: 12px;
+    padding: 20px;
+    line-height: 1.9;
+}
+
+.details-actions {
+    margin-top: 18px;
+}
+
+.details-actions button {
+    background: #0F766E;
+}
+
+.details-actions button:hover {
+    background: #115E59;
+}
+
+/* =========================
+   FOOTER IMPROVEMENT
+========================= */
+
+.user-footer {
+    background: linear-gradient(135deg, #0F766E, #115E59);
+    padding: 20px 30px;
+    margin-top: 50px;
+    border-top: none;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.footer-left {
+    font-size: 15px;
+}
+
+.footer-center {
+    font-size: 14px;
+    opacity: 0.95;
+}
+
+.logout-btn {
+    background: white;
+    color: #0F766E;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: #D1FAE5;
+    color: #115E59;
+    transform: translateY(-2px);
+}
+
+/* =========================
+   OVERALL UI POLISH
+========================= */
+
+.container {
+    padding-top: 10px;
+}
+
+.container > h2 {
+    font-size: 26px;
+    margin-top: 10px;
+}
+
+button {
+    border-radius: 10px;
+    letter-spacing: 0.2px;
+}
+
+button:hover {
+    box-shadow: 0 4px 10px rgba(15, 118, 110, 0.25);
+}
+
+input[type="file"]:focus,
+select:focus,
+button:focus {
+    outline: 3px solid #99F6E4;
+    outline-offset: 2px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #CCFBF1;
+    margin: 30px 0;
+}
+
+/* =========================
+   HEADER IMPROVEMENT
+========================= */
+
+header {
+    background: linear-gradient(135deg, #0F766E, #115E59);
+    padding: 40px 20px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+header h1 {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+header p {
+    font-size: 18px;
+    max-width: 750px;
+    margin: auto;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 32px 15px;
+    }
+
+    header h1 {
+        font-size: 32px;
+    }
+
+    header p {
+        font-size: 16px;
+    }
+}
+/* =========================
+   CAMERA SCANNER IMPROVEMENT
+========================= */
+
+.camera-section {
+    background: linear-gradient(135deg, #ffffff, #f0fdfa);
+    border-top: 6px solid #0F766E;
+    padding: 28px;
+}
+
+.camera-section h3 {
+    font-size: 23px;
+    color: #0F766E;
+}
+
+#cameraPreview {
+    border: 4px solid #0F766E;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+#startCameraBtn,
+#captureBtn {
+    background: #0F766E;
+    font-size: 18px;
+}
+
+#startCameraBtn:hover,
+#captureBtn:hover {
+    background: #115E59;
+}
+
+#cameraStatus {
+    background: #F8FAFC;
+    border: 1px solid #CCFBF1;
+    color: #374151;
+    font-size: 16px;
+    padding: 15px;
+    border-radius: 10px;
+}
+/* =========================
+   UPLOAD SECTION IMPROVEMENT
+========================= */
+
+.upload-section {
+    background: linear-gradient(135deg, #ffffff, #f0fdfa);
+    border-top: 6px solid #0F766E;
+    padding: 28px;
+}
+
+.upload-section h3 {
+    font-size: 23px;
+    color: #0F766E;
+}
+
+.upload-section p {
+    color: #4B5563;
+    line-height: 1.6;
+    margin-bottom: 18px;
+}
+
+input[type="file"] {
+    background: #F8FAFC;
+    border: 2px dashed #0F766E;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.upload-section button {
+    background: #0F766E;
+    font-size: 18px;
+}
+
+.upload-section button:hover {
+    background: #115E59;
+}
+/* =========================
+   LANGUAGE SELECTION
+========================= */
+
+.container > label[for="language"] {
+    display: block;
+    font-weight: bold;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+#language {
+    background: #ffffff;
+    border: 2px solid #0F766E;
+    color: #1F2937;
+    font-size: 17px;
+    font-weight: 600;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#language:hover {
+    border-color: #115E59;
+    background: #F0FDFA;
+}
+
+#language:focus {
+    outline: 3px solid #99F6E4;
+    outline-offset: 2px;
+}

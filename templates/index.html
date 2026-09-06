@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VisionVoice</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
+</head>
+
+<body>
+
+    <!-- Hamburger Menu -->
+<button id="menuToggle" class="menu-toggle" onclick="toggleSidebar()">
+    ☰
+</button>
+
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-header">
+        <h2>VisionVoice</h2>
+        <button onclick="toggleSidebar()" class="close-menu">×</button>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="#home">🏠 Home</a>
+
+        <a href="#cameraSection">📷 Scan Product</a>
+
+        <a href="#productDetails">📋 Product Details</a>
+
+        <a href="#shoppingSection">🛒 Shopping List</a>
+
+        <a href="#voiceSection">🎤 Voice Commands</a>
+
+        <a href="/logout">🚪 Logout</a>
+
+    </nav>
+
+</aside>
+
+<header id="home">
+    <h1>VisionVoice</h1>
+
+    <p>
+        AI-Based Smart Shopping Assistant
+        for Visually Impaired People
+    </p>
+</header>
+
+
+<div class="container">
+
+    <h2>📷 Scan Your Product</h2>
+
+    <!-- CAMERA SCANNER -->
+
+<div class="camera-section" id="cameraSection">
+
+    <h3>📷 Scan Product with Camera</h3>
+
+    <video id="cameraPreview"
+           autoplay
+           playsinline
+           style="display:none; width:100%; max-width:500px;">
+    </video>
+
+    <br>
+
+    <button type="button"
+            id="startCameraBtn"
+            onclick="startCamera()">
+        📷 Open Camera
+    </button>
+
+    <button type="button"
+            id="captureBtn"
+            onclick="captureProduct()"
+            style="display:none;">
+        📸 Capture Product
+    </button>
+
+    <canvas id="cameraCanvas"
+            style="display:none;">
+    </canvas>
+
+    <br><br>
+
+    <p id="cameraStatus">
+        Click Open Camera to scan a product.
+    </p>
+
+</div>
+
+
+<hr>
+
+
+<!-- BACKUP: CHOOSE IMAGE -->
+
+<div class="upload-section">
+
+    <h3>📁 Choose Product Image</h3>
+
+    <p>Upload a clear product image if you cannot use the camera.</p>
+    
+    <form action="/predict"
+          method="POST"
+          enctype="multipart/form-data">
+
+        <input type="file"
+               name="image"
+               accept="image/*"
+               required>
+
+        <br><br>
+
+        <button type="submit">
+            🔍 Scan Product Image
+        </button>
+
+    </form>
+
+</div>
+
+    <h2>Select Languages</h2>
+
+
+        <!-- LANGUAGE -->
+
+        <label for="language">
+            Choose Language:
+        </label>
+
+        <select name="language" id="language">
+
+            <option value="en">English</option>
+
+            <option value="ta">Tamil</option>
+
+            <option value="hi">Hindi</option>
+
+        </select>
+
+        <br><br>
+
+
+    <br>
+
+
+    <!-- VOICE COMMAND -->
+
+    <div class="voice-command" id="voiceSection">
+    <h3>🎤 Talk to VisionVoice</h3>
+
+    <p>Use your voice to scan products, hear details, and get recommendations.</p>
+
+    <button type="button"
+            id="startVoiceButton"
+            onclick="activateVisionVoice()">
+        🎤 Start VisionVoice
+    </button>
+
+    <p id="voiceStatus">
+        Starting VisionVoice...
+    </p>
+    </div>
+
+    <br>
+    <div class="conversation-box">
+
+    <h3>💬 VisionVoice Conversation</h3>
+
+    <div id="conversation">
+        <p>
+            <strong>VisionVoice:</strong>
+            Hi! Ask me anything about the product.
+        </p>
+    </div>
+
+</div>
+
+<div class="shopping-section" id="shoppingSection">
+
+    <h3>🛒 Shopping List</h3>
+
+    <div id="shoppingItems">
+        <p>Your shopping list is empty.</p>
+    </div>
+
+    <button type="button" onclick="showShoppingList()">
+        🛒 Show Shopping List
+    </button>
+
+    <button type="button" onclick="clearShoppingList()">
+        🗑️ Clear List
+    </button>
+
+</div>
+    
+
+
+    <!-- RESULT -->
+
+    {% if result %}
+
+<div class="details" id="productDetails">
+
+    <div class="details-header">
+        <span class="details-icon">🛍️</span>
+        <h3>Product Details</h3>
+    </div>
+
+    <div class="product-result">
+        <p>{{ result }}</p>
+    </div>
+
+    <div class="details-actions">
+
+        <button type="button"
+                onclick="speakText()">
+            🔊 Listen
+        </button>
+
+        <button type="button"
+                onclick="stopVoice()">
+            ⏹ Stop
+        </button>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+</div>
+
+<footer class="user-footer">
+
+    <div class="footer-left">
+        {% if user_name %}
+            👤 Welcome, {{ user_name }}
+        {% endif %}
+    </div>
+
+    <div class="footer-center">
+        © 2026 VisionVoice
+    </div>
+
+    <div class="footer-right">
+        {% if user_name %}
+            <a href="/logout" class="logout-btn">
+                🚪 Logout
+            </a>
+        {% endif %}
+    </div>
+
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}">
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>VisionVoice - Login</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-container {
+            width: 90%;
+            max-width: 400px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 7px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 25px;
+            background: #222;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .register-link {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <h1>VisionVoice</h1>
+
+    <p>Login to your account</p>
+
+    <form action="/login" method="POST">
+
+        <label for="email">
+            Email
+        </label>
+
+        <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+        >
+
+        <label for="password">
+            Password
+        </label>
+
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+        >
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+
+    {% if message %}
+
+    <div class="message">
+        {{ message }}
+    </div>
+
+    {% endif %}
+
+
+    <div class="register-link">
+
+        Don't have an account?
+
+        <a href="/register">
+            Create Account
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
