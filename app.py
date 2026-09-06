@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect
+from flask import Flask, render_template, request, jsonify, redirect,session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import session
@@ -175,6 +175,9 @@ def clear_shopping_list():
 
 @app.route("/")
 def home():
+
+    if "user_id" not in session:
+        return redirect("/login")
 
     user_name = session.get("user_name")
 
