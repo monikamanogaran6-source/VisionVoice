@@ -1022,6 +1022,16 @@ The user expects a natural conversation, not a fixed list.
 @app.route("/admin")
 def admin_dashboard():
 
+    conn = sqlite3.connect("visionvoice.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT COUNT(*) FROM users")
+    total_users = cursor.fetchone()[0]
+
+    conn.close()
+
+    admin_stats["total_users"] = total_users
+
     return render_template(
         "admin.html",
         stats=admin_stats
@@ -1036,6 +1046,5 @@ if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
         port=5000,
-        debug=True,
-        ssl_context="adhoc"
+        debug=True
     )

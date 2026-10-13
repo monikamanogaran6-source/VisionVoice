@@ -62,6 +62,11 @@ function speak(text) {
         speech.voice = voice;
     }
 
+    speech.onerror = function (event) {
+        console.error("Speech synthesis error:", event.error);
+        voiceIsSpeaking = false;
+    };
+
     speech.onend = function () {
 
         voiceIsSpeaking = false;
@@ -108,9 +113,8 @@ function speakText() {
 // ================================
 
 function stopVoice() {
-
     window.speechSynthesis.cancel();
-
+    voiceIsSpeaking = false;
 }
 
 
@@ -293,7 +297,7 @@ async function addToShoppingList() {
         },
         body: JSON.stringify({
             question: "What is the product name? Give only the product name.",
-            language: "en"
+            language: currentLanguage
         })
     });
 
@@ -382,7 +386,7 @@ async function showShoppingList() {
         if (shoppingItems) {
 
             shoppingItems.innerHTML =
-                "<p>❌ Could not load shopping list.</p>";
+                "<p>Your shopping list is empty.</p>";
 
         }
 
@@ -399,19 +403,19 @@ async function showShoppingList() {
 // ==========================================
 
 async function clearShoppingList() {
+    const response = await fetch("/shopping/clear", {
+        method: "POST"
+    });
 
-    const response =
-        await fetch("/shopping/clear", {
+    const data = await response.json();
 
-            method: "POST"
+    const shoppingItems = document.getElementById("shoppingItems");
 
-        });
+    if (shoppingItems) {
+        shoppingItems.innerHTML = "<p>Your shopping list is empty.</p>";
+    }
 
-    const data =
-        await response.json();
-
-    document.getElementById("voiceStatus").innerText =
-        "🛒 " + data.answer;
+    document.getElementById("voiceStatus").innerText = "🛒 " + data.answer;
 
     speak(data.answer);
 }
@@ -422,16 +426,17 @@ async function clearShoppingList() {
 
 function handleVoiceNavigation(command) {
 
-    const lower = command.toLowerCase();
+    const lower = command.toLowerCase().trim();
 
-    // Shopping List
+    // ==========================================
+    // SHOPPING LIST
+    // ==========================================
     if (
         lower.includes("go to shopping list") ||
         lower.includes("open shopping list") ||
         lower.includes("show shopping list")
     ) {
-        const section =
-            document.getElementById("shoppingSection");
+        const section = document.getElementById("shoppingSection");
 
         if (section) {
             section.scrollIntoView({
@@ -440,13 +445,15 @@ function handleVoiceNavigation(command) {
         }
 
         speak("Opening your shopping list.");
-
         return true;
     }
 
 
-    // Conversation
+    // ==========================================
+    // VISIONVOICE CONVERSATION
+    // ==========================================
     if (
+        lower.includes("go to visionvoice conversation") ||
         lower.includes("go to conversation") ||
         lower.includes("open conversation") ||
         lower.includes("talk to visionvoice")
@@ -460,15 +467,20 @@ function handleVoiceNavigation(command) {
             });
         }
 
-        speak("Opening our conversation.");
-
+        speak("Opening VisionVoice conversation.");
         return true;
     }
 
 
-    // Product details
+    // ==========================================
+    // PRODUCT DETAILS
+    // ==========================================
     if (
+        lower.includes("go to product detail") ||
         lower.includes("go to product details") ||
+        lower.includes("open product detail") ||
+        lower.includes("open product details") ||
+        lower.includes("show product detail") ||
         lower.includes("show product details") ||
         lower.includes("read product")
     ) {
@@ -489,10 +501,91 @@ function handleVoiceNavigation(command) {
     }
 
 
-    // Home
+    // ==========================================
+    // SELECT LANGUAGE
+    // ==========================================
+    if (
+        lower.includes("go to select language") ||
+        lower.includes("open select language") ||
+        lower.includes("select language") ||
+        lower.includes("choose language") ||
+        lower.includes("go to language")
+    ) {
+        const language =
+            document.getElementById("language");
+
+        if (language) {
+            language.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            language.focus();
+        }
+
+        speak("Opening language selection.");
+        return true;
+    }
+
+
+    // ==========================================
+    // CHOOSE PRODUCT IMAGE / UPLOAD
+    // ==========================================
+    if (
+        lower.includes("go to choose product image") ||
+        lower.includes("choose product image") ||
+        lower.includes("go to product image") ||
+        lower.includes("open product image") ||
+        lower.includes("go to upload") ||
+        lower.includes("open upload")
+    ) {
+        const uploadSection =
+            document.querySelector(".upload-section");
+
+        if (uploadSection) {
+            uploadSection.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+        speak("Opening product image selection.");
+        return true;
+    }
+
+
+    // ==========================================
+    // VOICE COMMANDS
+    // ==========================================
+    if (
+        lower.includes("go to voice command") ||
+        lower.includes("go to voice commands") ||
+        lower.includes("open voice command") ||
+        lower.includes("open voice commands") ||
+        lower.includes("show voice commands")
+    ) {
+        const voiceSection =
+            document.getElementById("voiceSection");
+
+        if (voiceSection) {
+            voiceSection.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
+        speak("Opening voice commands.");
+        return true;
+    }
+
+
+    // ==========================================
+    // HOME
+    // ==========================================
     if (
         lower === "go home" ||
         lower.includes("go to home") ||
+        lower.includes("open home") ||
         lower.includes("scroll to top")
     ) {
         window.scrollTo({
@@ -501,7 +594,6 @@ function handleVoiceNavigation(command) {
         });
 
         speak("Going to the home section.");
-
         return true;
     }
 
@@ -612,6 +704,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     }, 1000);
+
+    const languageSelect = document.getElementById("language");
+    const uploadLanguage = document.getElementById("uploadLanguage");
+
+    if (languageSelect && uploadLanguage) {
+        languageSelect.addEventListener("change", function () {
+            uploadLanguage.value = this.value;
+        });
+    }
 
 });
 
@@ -952,26 +1053,29 @@ function startVoiceCommand() {
             }
 
 
+            // CLEAR SHOPPING LIST
             if (
-                lower.includes("show my shopping list") ||
-                lower.includes("what is in my shopping list") ||
-                lower.includes("shopping list")
+                lower.includes("clear my shopping list") ||
+                lower.includes("clear shopping list") ||
+                lower.includes("clear the shopping list") ||
+                lower.includes("empty my shopping list") ||
+                lower.includes("empty shopping list") ||
+                lower.includes("empty the shopping list")
             ) {
-
-                await showShoppingList();
-
-                    return;
+                await clearShoppingList();
+                return;
             }
 
 
+            // SHOW SHOPPING LIST
             if (
-                lower.includes("clear my shopping list") ||
-                lower.includes("empty my shopping list")
+                lower.includes("show my shopping list") ||
+                lower.includes("what is in my shopping list") ||
+                lower === "shopping list" ||
+                lower.includes("show shopping list")
             ) {
-
-                await clearShoppingList();
-
-                    return;
+                await showShoppingList();
+                return;
             }
 
             // ============================
@@ -1071,7 +1175,6 @@ window.addEventListener("load", function () {
 
 });
 
-
 // OPEN CAMERA
 async function startCamera() {
 
@@ -1102,34 +1205,352 @@ async function startCamera() {
         status.innerText =
             "📷 Camera is ready. Point the camera at the product.";
 
-        speak(
-            "Camera is ready. Point the camera at the product. I will capture it automatically in five seconds."
+        updateCameraGuidance(
+            "Camera is ready. Point the camera at the product.",
+            status
         );
 
 
-        // Automatic hands-free capture
-        setTimeout(function () {
-
-        if (cameraStream) {
-
-            speak("Capturing product now.");
-
-            captureProduct();
-
-        }
-
-    }, 5000);   
-    } catch (error) {
-
-        console.error(error);
+        // ==========================================
+        // LOAD PRODUCT DETECTION MODEL
+        // ==========================================
 
         status.innerText =
-            "❌ Camera access was denied or unavailable.";
+            "🔍 Starting product detection...";
 
-        speak(
-            "I could not access the camera. Please allow camera permission."
+        console.log("Loading product detection model...");
+
+        const model = await cocoSsd.load();
+
+        console.log("Product detection model loaded.");
+
+        // ==========================================
+        // START VOICE CAMERA GUIDANCE
+        // ==========================================
+
+        console.log("Starting camera guidance...");
+
+        startCameraGuidance(model, video);
+
+
+    } catch (error) {
+
+        console.error("CAMERA ERROR:", error);
+
+        status.innerText =
+            "❌ Camera error. Please check the console.";
+
+        window.speechSynthesis.cancel();
+
+        const speech =
+            new SpeechSynthesisUtterance(
+                "There is a camera problem. Please check camera permission."
         );
+
+        speech.lang = "en-US";
+
+        window.speechSynthesis.speak(speech);
     }
+}
+
+// ==========================================
+// CAMERA VOICE GUIDANCE
+// ==========================================
+
+async function startCameraGuidance(model, video) {
+
+    console.log("CAMERA GUIDANCE STARTED");
+
+    const status = document.getElementById("cameraStatus");
+
+    let centeredStartTime = null;
+    let isCapturing = false;
+    let detecting = false;
+
+    updateCameraGuidance(
+        "Camera guidance is active. Please point your phone at the product.",
+        status
+    );
+
+    async function detectProduct() {
+
+        if (!cameraStream || isCapturing) {
+            return;
+        }
+
+        if (detecting) {
+            requestAnimationFrame(detectProduct);
+            return;
+        }
+
+        detecting = true;
+
+        try {
+
+            if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
+                detecting = false;
+                requestAnimationFrame(detectProduct);
+                return;
+            }
+
+            const predictions = await model.detect(video);
+
+            if (predictions.length === 0) {
+
+                centeredStartTime = null;
+
+                updateCameraGuidance(
+                    "I cannot see the product yet. Please point your phone toward the product.",
+                    status
+                );
+
+            } else {
+
+                const product = predictions.reduce(
+                    (best, current) =>
+                        current.score > best.score ? current : best
+                );
+
+                const [x, y, width, height] = product.bbox;
+
+                const videoWidth = video.videoWidth;
+                const videoHeight = video.videoHeight;
+
+                const centerX = x + width / 2;
+                const centerY = y + height / 2;
+
+                const productArea =
+                    (width * height) /
+                    (videoWidth * videoHeight);
+
+
+                // PRODUCT TOO FAR
+                if (productArea < 0.08) {
+
+                    centeredStartTime = null;
+
+                    updateCameraGuidance(
+                        "The product is a little far away. Move your phone closer.",
+                        status
+                    );
+
+                }
+
+                // PRODUCT LEFT
+                else if (centerX < videoWidth * 0.40) {
+
+                    centeredStartTime = null;
+
+                    updateCameraGuidance(
+                        "The product is slightly to your left. Move your phone a little to the left.",
+                        status
+                    );
+
+                }
+
+                // PRODUCT RIGHT
+                else if (centerX > videoWidth * 0.60) {
+
+                    centeredStartTime = null;
+
+                    updateCameraGuidance(
+                        "The product is slightly to your right. Move your phone a little to the right.",
+                        status
+                    );
+
+                }
+
+                // PRODUCT ABOVE
+                else if (centerY < videoHeight * 0.40) {
+
+                    centeredStartTime = null;
+
+                    updateCameraGuidance(
+                        "The product is a little higher. Point your phone slightly up.",
+                        status
+                    );
+
+                }
+
+                // PRODUCT BELOW
+                else if (centerY > videoHeight * 0.60) {
+
+                    centeredStartTime = null;
+
+                    updateCameraGuidance(
+                        "The product is a little lower. Point your phone slightly down.",
+                        status
+                    );
+
+                }
+
+                // PRODUCT CENTERED
+                else {
+
+                    if (centeredStartTime === null) {
+
+                        centeredStartTime = Date.now();
+
+                        updateCameraGuidance(
+                            "Perfect. The product is centered. Hold your phone steady.",
+                            status
+                        );
+                    }
+
+                    // Capture after product stays centered
+                    if (
+                        Date.now() - centeredStartTime >= 2000
+                    ) {
+
+                        isCapturing = true;
+
+                        updateCameraGuidance(
+                            "Great. The product is in position. Capturing it now.",
+                            status
+                        );
+
+                        setTimeout(function () {
+
+                            if (cameraStream) {
+                                captureProduct();
+                            }
+
+                        }, 700);
+                    }
+                }
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Camera detection error:",
+                error
+            );
+
+        } finally {
+
+            detecting = false;
+        }
+
+
+        if (!isCapturing && cameraStream) {
+
+            setTimeout(function () {
+                requestAnimationFrame(detectProduct);
+            }, 300);
+
+        }
+    }
+
+    detectProduct();
+}
+
+// ==========================================
+// VOICE GUIDED CAMERA POSITIONING
+// ==========================================
+
+let lastCameraGuidance = "";
+let lastGuidanceTime = 0;
+
+function updateCameraGuidance(message, status) {
+
+    const now = Date.now();
+
+    // Show message on screen
+    if (status) {
+        status.innerText = "🔊 " + message;
+    }
+
+    // Avoid repeating the same message too often
+    if (
+        message === lastCameraGuidance &&
+        now - lastGuidanceTime < 3000
+    ) {
+        return;
+    }
+
+    lastCameraGuidance = message;
+    lastGuidanceTime = now;
+
+    // Cancel only camera guidance speech
+    window.speechSynthesis.cancel();
+
+    const languageCode =
+        languageCodes[currentLanguage] || "en-US";
+
+    const speech =
+        new SpeechSynthesisUtterance(message);
+
+    speech.lang = languageCode;
+    speech.rate = 0.9;
+    speech.pitch = 1;
+
+    const voice =
+        getVoice(languageCode);
+
+    if (voice) {
+        speech.voice = voice;
+    }
+
+    speech.onstart = function () {
+        console.log("Camera guidance speaking:", message);
+    };
+
+    speech.onerror = function (event) {
+        console.log(
+            "Camera guidance speech error:",
+            event.error
+        );
+    };
+
+    window.speechSynthesis.speak(speech);
+}
+
+// ==========================================
+// PREVENT VOICE GUIDANCE FROM REPEATING
+// ==========================================
+
+function updateCameraGuidance(message, status) {
+
+    const now = Date.now();
+
+    // Update camera status text
+    if (status) {
+        status.innerText = "🔊 " + message;
+    }
+
+    // Prevent repeated voice messages
+    if (
+        message === lastCameraGuidance &&
+        now - lastGuidanceTime < 3000
+    ) {
+        return;
+    }
+
+    lastCameraGuidance = message;
+    lastGuidanceTime = now;
+
+    // Stop current camera guidance speech
+    window.speechSynthesis.cancel();
+
+    const languageCode =
+        languageCodes[currentLanguage] || "en-US";
+
+    const speech =
+        new SpeechSynthesisUtterance(message);
+
+    speech.lang = languageCode;
+    speech.rate = 0.9;
+    speech.pitch = 1;
+
+    const voice =
+        getVoice(languageCode);
+
+    if (voice) {
+        speech.voice = voice;
+    }
+
+    window.speechSynthesis.speak(speech);
 }
 
 // ==========================================
@@ -1401,10 +1822,16 @@ async function captureProduct() {
 
                 // Read AI result
                 speak(data.result);
+                
+
+                // Automatically read visible text using OCR
+                setTimeout(async function () {
+                    await readImageText();
+                }, 1500);
 
             }
-
-            catch (error) {
+            catch
+             (error) {
 
                 console.error(
                     "Camera scan error:",
@@ -1438,4 +1865,80 @@ function toggleSidebar() {
     }
 
     sidebar.classList.toggle("active");
+}
+
+async function scanProductImage(event) {
+
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const button = form.querySelector("button[type='submit']");
+
+    if (button) {
+        button.disabled = true;
+        button.innerText = "🔍 Scanning...";
+    }
+
+    try {
+
+        const response = await fetch("/predict", {
+            method: "POST",
+            body: formData
+        });
+
+        const html = await response.text();
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+
+        const newDetails = doc.querySelector("#productDetails");
+
+        if (newDetails) {
+
+            const oldDetails =
+                document.querySelector("#productDetails");
+
+            if (oldDetails) {
+                oldDetails.replaceWith(newDetails);
+            } else {
+                const uploadSection =
+                    document.querySelector(".upload-section");
+
+                if (uploadSection) {
+                    uploadSection.insertAdjacentElement(
+                        "afterend",
+                        newDetails
+                    );
+                }
+            }
+
+            const resultText =
+                newDetails.querySelector(".product-result p");
+
+            if (resultText) {
+
+                const text = resultText.innerText.trim();
+
+                document.getElementById("voiceStatus").innerText =
+                    "🔊 Reading product details...";
+
+                speak(text);
+            }
+        }
+
+    } catch (error) {
+
+        console.error("Product scan error:", error);
+
+        speak("Sorry, I could not scan the product.");
+
+    } finally {
+
+        if (button) {
+            button.disabled = false;
+            button.innerText = "🔍 Scan Product Image";
+        }
+    }
 }

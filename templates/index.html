@@ -114,7 +114,10 @@
     
     <form action="/predict"
           method="POST"
-          enctype="multipart/form-data">
+          enctype="multipart/form-data"
+          onsubmit="scanProductImage(event)">
+
+        <input type="hidden" name="language" id="uploadLanguage" value="en">
 
         <input type="file"
                name="image"
@@ -140,7 +143,8 @@
             Choose Language:
         </label>
 
-        <select name="language" id="language">
+        <select name="language" id="language"
+        onchange="document.getElementById('uploadLanguage').value = this.value;">
 
             <option value="en">English</option>
 
