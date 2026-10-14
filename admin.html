@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>VisionVoice Admin Dashboard</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+
+        header {
+            padding: 25px;
+            text-align: center;
+            background: #222;
+            color: white;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(200px, 1fr));
+
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .card h2 {
+            font-size: 35px;
+            margin: 10px;
+        }
+
+        .card p {
+            font-size: 17px;
+        }
+
+        .back {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 20px;
+            width: 150px;
+            text-align: center;
+            text-decoration: none;
+            background: #222;
+            color: white;
+            border-radius: 8px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>VisionVoice</h1>
+
+    <p>Admin Dashboard</p>
+
+</header>
+
+
+<div class="container">
+
+
+    <div class="dashboard">
+
+
+        <div class="card">
+
+            <h2>
+                {{ stats.total_users }}
+            </h2>
+
+            <p>👥 Total Users</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                {{ stats.products_scanned }}
+            </h2>
+
+            <p>📷 Products Scanned</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                {{ stats.ocr_requests }}
+            </h2>
+
+            <p>📝 OCR Requests</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                {{ stats.recommendation_requests }}
+            </h2>
+
+            <p>💡 Recommendations</p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                {{ stats.voice_requests }}
+            </h2>
+
+            <p>🎤 Voice Requests</p>
+
+        </div>
+
+
+    </div>
+
+
+    <a href="/" class="back">
+        ← Back to VisionVoice
+    </a>
+
+
+</div>
+
+
+</body>
+
+</html>
